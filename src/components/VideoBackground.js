@@ -1,3 +1,5 @@
+// src/components/VideoBackground.js
+
 import { useSelector } from "react-redux";
 import useMovieTrailer from "../hooks/useMovieTrailer";
 
@@ -9,7 +11,8 @@ const VideoBackground = ({ movieId }) => {
   return (
     <div className=" w-screen">
       <iframe
-        className="w-screen aspect-video"
+        // Add aspect-auto to this className
+        className="w-screen aspect-video aspect-auto"
         src={
           "https://www.youtube.com/embed/" +
           trailerVideo?.key +

@@ -2,7 +2,8 @@ import { onAuthStateChanged, signOut } from "firebase/auth";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { LOGO, SUPPORTED_LANGUAGES } from "../utils/constants";
+import CINEGPT_LOGO from "../assets/logo.png"; // Make sure your logo is in src/assets/
+import { SUPPORTED_LANGUAGES } from "../utils/constants";
 import { auth } from "../utils/firebase";
 import { addUser, removeUser } from "../utils/userSlice";
 import { toggleGptSearchView } from "../utils/gptSlice";
@@ -13,6 +14,7 @@ const Header = () => {
   const navigate = useNavigate();
   const user = useSelector((store) => store.user);
   const showGptSearch = useSelector((store) => store.gpt.showGptSearch);
+
   const handleSignOut = () => {
     signOut(auth)
       .then(() => {})
@@ -40,7 +42,7 @@ const Header = () => {
       }
     });
 
-    // Unsiubscribe when component unmounts
+    // Unsubscribe when component unmounts
     return () => unsubscribe();
   }, []);
 
@@ -55,7 +57,7 @@ const Header = () => {
 
   return (
     <div className="absolute w-screen px-8 py-2 bg-gradient-to-b from-black z-10 flex flex-col md:flex-row justify-between">
-      <img className="w-44 mx-auto md:mx-0" src={LOGO} alt="logo" />
+      <img className="w-44 mx-auto md:mx-0" src={CINEGPT_LOGO} alt="logo" />
       {user && (
         <div className="flex p-2 justify-between">
           {showGptSearch && (
