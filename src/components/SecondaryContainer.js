@@ -9,8 +9,8 @@ const SecondaryContainer = () => {
       <div className="bg-black">
         <div className="mt-0 md:-mt-40 relative z-20">
           <MovieList title={"Now Playing"} movies={movies.nowPlayingMovies} />
+          <MovieList title={"Trending"} movies={movies.trendingMovies} /> {/* Add this line */}
           <MovieList title={"Popular"} movies={movies.popularMovies} />
-          {/* Add any other movie lists here */}
         </div>
       </div>
     )
