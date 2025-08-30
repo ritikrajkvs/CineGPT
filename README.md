@@ -1,69 +1,92 @@
-# Netflix GPT
+# CineGPT: A Movie Recommendation Web Application
 
-- Create React App
-- Configured TailwindCSS 
-- Header
-- Routing of App
-- Login Form
-- Sign up Form
-- Form Validation
-- useRef Hook
-- Firebase Setup
-- Deploying our app to production
-- Create SignUp User Account
-- Implement Sign In user Api
-- Created Redux Store with userSlice
-- Implemented Sign out 
-- Update Profile
-- BugFix: Sign up user displayName and profile picture update
-- BugFix: if the user is not logged in Redirect /browse to Login Page and vice-versa
-- Unsubscibed to the onAuthStateChanged callback
-- Add hardcoded values to the constants file
-- Regiter TMDB API & create an app & get access token
-- Get Data from TMDB now playing movies list API
-- Custom Hook for Now Playing Movies
-- Create movieSlice
-- Update Store with movies Data
-- Planning for MainContauiner & secondary container
-- Fetch Data for Trailer Video
-- Update Store with Trailer Video Data
-- Embedded the Yotube video and make it autoplay and mute
-- Tailwind Classes to make Main Container look awesome
-- Build Secondary Component
-- Build Movie List
-- build Movie Card
-- TMDB Image CDN URL
-- Made the Browsre page amazing with Tailwind CSS
-- usePopularMovies Custom hook
-- GPT Search Page
-- GPT Search Bar
-- (BONUS) Multi-language Feature in our App)
-- Get Open AI Api Key 
-- Gpt Search API Call
-- fetched gptMoviesSuggestions from TMDB
-- created gptSlice added data
-- Resused Movie List component to make movie suggestion container
-- Memoization
-- Added .env file
-- Adding .env file to gitignore
-- Made our Site Responsive
+## About the Project
 
-# Features
-- Login/Sign Up
-    - Sign In /Sign up Form
-    - redirect to Browse Page
-- Browse (after authentication)
-    - Header
-    - Main Movie
-        - Tailer in Background
-        - Title & Description
-        - MovieSuggestions
-            - MovieLists * N 
-- NetflixGPT
-    - Search Bar
-    - Movie Suggestions
+This project is a React-based web application inspired by Netflix, featuring a user authentication system, movie browsing capabilities, and a unique GPT-powered search functionality for movie recommendations. It's built with modern web technologies, including React, Redux Toolkit for state management, and Tailwind CSS for styling. The application integrates with both the TMDB (The Movie Database) API for movie data and the OpenAI API for its AI search feature.
 
+## Features
 
+  - **User Authentication:**
 
-# Project Setup
-- Before starting the project please add .env file and add TMDB and OPENAI KEY into it.
+      - Secure sign-in and sign-up forms with form validation.
+      - Redirects users to the appropriate page (`/browse` for logged-in users, `/` for logged-out).
+      - Implements user sign-out functionality.
+
+  - **Movie Browsing:**
+
+      - Displays a main movie container with a background trailer and movie title/description.
+      - Shows categorized movie lists (Now Playing, Popular, and Trending).
+      - Each movie list contains clickable movie cards.
+
+  - **GPT Search:**
+
+      - A dedicated search page with an input bar.
+      - Uses the OpenAI API to generate movie suggestions based on user queries.
+      - Integrates TMDB to fetch movie posters for the suggested titles.
+
+  - **Additional Features:**
+
+      - Multi-language support.
+      - Responsive design using Tailwind CSS.
+      - State management with Redux Toolkit.
+
+## Technologies Used
+
+The project is built using a combination of libraries and frameworks to ensure a robust and scalable application.
+
+  - **Frontend:**
+
+      - **React:** For building the user interface.
+      - **React Router DOM:** For client-side routing.
+      - **Redux Toolkit:** For efficient state management across the application.
+      - **Tailwind CSS:** For utility-first styling.
+      - **Heroicons:** For UI icons.
+      - **React-dom:** For rendering React components.
+
+  - **Backend/APIs:**
+
+      - **Firebase:** For user authentication.
+      - **OpenAI API:** For GPT-powered movie search.
+      - **TMDB API:** For fetching movie data and images.
+
+## Getting Started
+
+To run this project locally, you need to set up your environment variables with the necessary API keys.
+
+### Prerequisites
+
+  - Node.js installed on your machine.
+
+### Installation
+
+1.  Clone the repository:
+    ```bash
+    git clone [repository-url]
+    ```
+2.  Navigate to the project directory:
+    ```bash
+    cd cine-gpt
+    ```
+3.  Install the dependencies:
+    ```bash
+    npm install
+    ```
+
+### Environment Variables
+
+Create a `.env` file in the root of the project and add the following keys:
+
+```
+REACT_APP_TMDB_KEY="your_tmdb_api_key"
+REACT_APP_OPENAI_KEY="your_openai_api_key"
+```
+
+### Running the Application
+
+To start the development server:
+
+```bash
+npm start
+```
+
+The application will be available at `http://localhost:3000`.
