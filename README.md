@@ -2,7 +2,7 @@
 
 ## About the Project
 
-This project is a React-based web application inspired by Netflix, featuring a user authentication system, movie browsing capabilities, and a unique GPT-powered search functionality for movie recommendations. It's built with modern web technologies, including React, Redux Toolkit for state management, and Tailwind CSS for styling. The application integrates with both the TMDB (The Movie Database) API for movie data and the OpenAI API for its AI search feature.
+This project is a React-based web application inspired by Netflix, featuring a user authentication system, movie browsing capabilities, and a unique GPT-powered search functionality for movie recommendations. It's built with modern web technologies, including React, Redux Toolkit for state management, and Tailwind CSS for styling. The application integrates with both the TMDB (The Movie Database) API for movie data and the GEMINI API for its AI search feature.
 
 ## Features
 
@@ -21,7 +21,7 @@ This project is a React-based web application inspired by Netflix, featuring a u
   - **GPT Search:**
 
       - A dedicated search page with an input bar.
-      - Uses the OpenAI API to generate movie suggestions based on user queries.
+      - Uses the GEMINI API to generate movie suggestions based on user queries.
       - Integrates TMDB to fetch movie posters for the suggested titles.
 
   - **Additional Features:**
@@ -46,7 +46,7 @@ The project is built using a combination of libraries and frameworks to ensure a
   - **Backend/APIs:**
 
       - **Firebase:** For user authentication.
-      - **OpenAI API:** For GPT-powered movie search.
+      - **GEMINI API:** For GPT-powered movie search.
       - **TMDB API:** For fetching movie data and images.
 
 ## Getting Started
