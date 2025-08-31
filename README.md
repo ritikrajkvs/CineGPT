@@ -85,6 +85,8 @@ REACT_APP_OPENAI_KEY="your_openai_api_key"
 
 To start the development server:
 
+live link:https://cinegpt-4e591.web.app/
+
 ```bash
 npm start
 ```
