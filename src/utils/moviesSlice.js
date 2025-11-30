@@ -1,5 +1,19 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+// 1. Helper function to load data from Local Storage safely
+const loadFromStorage = (key) => {
+  try {
+    const serializedState = localStorage.getItem(key);
+    if (serializedState === null) {
+      return [];
+    }
+    return JSON.parse(serializedState);
+  } catch (err) {
+    console.warn("Could not load from local storage", err);
+    return [];
+  }
+};
+
 const moviesSlice = createSlice({
   name: "movies",
   initialState: {
@@ -8,8 +22,9 @@ const moviesSlice = createSlice({
     trendingMovies: null,
     trailerVideo: null,
     movieTrailer: null,
-    favorites: [], // New State
-    watchLater: [], // New State
+    // 2. Initialize state from Local Storage instead of empty arrays
+    favorites: loadFromStorage("favorites"), 
+    watchLater: loadFromStorage("watchLater"), 
   },
   reducers: {
     addNowPlayingMovies: (state, action) => {
@@ -27,24 +42,27 @@ const moviesSlice = createSlice({
     addMovieTrailer: (state, action) => {
       state.movieTrailer = action.payload;
     },
-    // New Actions
     toggleFavorite: (state, action) => {
       const movie = action.payload;
       const index = state.favorites.findIndex((m) => m.id === movie.id);
       if (index >= 0) {
-        state.favorites.splice(index, 1); // Remove if exists
+        state.favorites.splice(index, 1); // Remove
       } else {
-        state.favorites.push(movie); // Add if doesn't exist
+        state.favorites.push(movie); // Add
       }
+      // 3. Save to Local Storage whenever the list changes
+      localStorage.setItem("favorites", JSON.stringify(state.favorites));
     },
     toggleWatchLater: (state, action) => {
       const movie = action.payload;
       const index = state.watchLater.findIndex((m) => m.id === movie.id);
       if (index >= 0) {
-        state.watchLater.splice(index, 1);
+        state.watchLater.splice(index, 1); // Remove
       } else {
-        state.watchLater.push(movie);
+        state.watchLater.push(movie); // Add
       }
+      // 3. Save to Local Storage whenever the list changes
+      localStorage.setItem("watchLater", JSON.stringify(state.watchLater));
     },
   },
 });
