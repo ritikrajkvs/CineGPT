@@ -166,7 +166,13 @@ const Header = () => {
 
           {/* USER PROFILE & LOGOUT */}
           <div className="flex items-center gap-3 border-l border-gray-700 pl-4 ml-1">
-            <UserCircleIcon className="h-9 w-9 text-white cursor-pointer hover:text-gray-300 transition-colors" />
+            <button
+              onClick={() => navigate("/profile")}
+              className="group relative"
+              title="View Profile"
+            >
+              <UserCircleIcon className="h-9 w-9 text-white cursor-pointer hover:text-gray-300 transition-colors" />
+            </button>
             
             <button
               onClick={handleSignOut}
