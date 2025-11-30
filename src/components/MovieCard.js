@@ -49,11 +49,11 @@ const MovieCard = ({ movie }) => {
   };
 
   return (
-    // 1. 'group' class here ensures hover effects are contained to THIS specific card
-    <div className="w-36 md:w-48 mr-4 relative group cursor-pointer flex-shrink-0"> 
+    // FIX: Changed 'group' to 'group/card' to isolate it from the parent list
+    <div className="w-36 md:w-48 mr-4 relative group/card cursor-pointer flex-shrink-0"> 
       <div 
-        // Scales the card and brings it to the front (z-50) on hover
-        className="transition-transform duration-300 ease-in-out group-hover:scale-105 group-hover:z-50 relative rounded-md overflow-hidden shadow-lg w-full aspect-[3/4]" 
+        // FIX: Updated all 'group-hover' to 'group-hover/card'
+        className="transition-transform duration-300 ease-in-out group-hover/card:scale-105 group-hover/card:z-50 relative rounded-md overflow-hidden shadow-lg w-full aspect-[3/4]" 
         onClick={handlePlayClick}
       >
         <img
@@ -62,11 +62,8 @@ const MovieCard = ({ movie }) => {
           className="object-cover w-full h-full"
         />
         
-        {/* 2. Button Overlay: 
-             - 'invisible opacity-0': Hidden by default
-             - 'group-hover:visible group-hover:opacity-100': ONLY shows when THIS card's 'group' is hovered 
-        */}
-        <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-60 transition-all duration-300 flex flex-col justify-center items-center space-y-2 invisible group-hover:visible opacity-0 group-hover:opacity-100">
+        {/* Overlay with Action Buttons */}
+        <div className="absolute inset-0 bg-black bg-opacity-0 group-hover/card:bg-opacity-60 transition-all duration-300 flex flex-col justify-center items-center space-y-2 invisible group-hover/card:visible opacity-0 group-hover/card:opacity-100">
             
             {/* Play Button */}
             <button 
@@ -77,7 +74,6 @@ const MovieCard = ({ movie }) => {
                 <PlayCircleIcon className="h-8 w-8 md:h-10 md:w-10" />
             </button>
 
-            {/* Action Buttons Row */}
             <div className="flex space-x-4">
               <button 
                   onClick={handleFavorite}
@@ -97,6 +93,7 @@ const MovieCard = ({ movie }) => {
             </div>
         </div>
       </div>
+      {/* Title */}
       <p className="text-sm mt-2 font-semibold truncate text-white pt-1">{movie.title}</p>
     </div>
   );
