@@ -24,7 +24,8 @@ const MovieList = ({ title, movies }) => {
 
       <div className="relative">
         <ChevronLeftIcon
-          className="absolute top-0 bottom-0 left-2 z-40 m-auto h-9 w-9 cursor-pointer
+          // FIX: Increased z-index from z-40 to z-[100] to ensure it stays above hovered cards
+          className="absolute top-0 bottom-0 left-2 z-[100] m-auto h-9 w-9 cursor-pointer
                      opacity-0 transition hover:scale-125 group-hover:opacity-100
                      bg-black bg-opacity-50 text-white rounded-full p-2"
           onClick={() => handleClick("left")}
@@ -43,7 +44,8 @@ const MovieList = ({ title, movies }) => {
         </div>
 
         <ChevronRightIcon
-          className="absolute top-0 bottom-0 right-2 z-40 m-auto h-9 w-9 cursor-pointer
+          // FIX: Increased z-index from z-40 to z-[100] to ensure it stays above hovered cards
+          className="absolute top-0 bottom-0 right-2 z-[100] m-auto h-9 w-9 cursor-pointer
                      opacity-0 transition hover:scale-125 group-hover:opacity-100
                      bg-black bg-opacity-50 text-white rounded-full p-2"
           onClick={() => handleClick("right")}
