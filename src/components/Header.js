@@ -8,7 +8,14 @@ import { auth } from "../utils/firebase";
 import { addUser, removeUser } from "../utils/userSlice";
 import { toggleGptSearchView } from "../utils/gptSlice";
 import { changeLanguage } from "../utils/configSlice";
-import { MagnifyingGlassIcon, ArrowRightOnRectangleIcon, UserCircleIcon, HeartIcon, ClockIcon, HomeIcon } from "@heroicons/react/24/outline";
+import {
+  MagnifyingGlassIcon,
+  ArrowRightOnRectangleIcon,
+  UserCircleIcon,
+  HeartIcon,
+  ClockIcon,
+  HomeIcon,
+} from "@heroicons/react/24/outline";
 
 const Header = () => {
   const dispatch = useDispatch();
@@ -18,14 +25,10 @@ const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const location = useLocation();
 
-  // Change header background on scroll
+  // Handle Scroll Effect
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > 0) {
-        setIsScrolled(true);
-      } else {
-        setIsScrolled(false);
-      }
+      setIsScrolled(window.scrollY > 0);
     };
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
@@ -52,7 +55,7 @@ const Header = () => {
           })
         );
         if (location.pathname === "/") {
-            navigate("/browse");
+          navigate("/browse");
         }
       } else {
         dispatch(removeUser());
@@ -61,12 +64,11 @@ const Header = () => {
     });
 
     return () => unsubscribe();
-  }, [dispatch, navigate]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [dispatch, navigate]);
 
   const handleGptSearchClick = () => {
-    // Navigate to /browse first, then toggle search
     if (location.pathname !== "/browse") {
-        navigate("/browse");
+      navigate("/browse");
     }
     dispatch(toggleGptSearchView());
   };
@@ -74,83 +76,104 @@ const Header = () => {
   const handleLanguageChange = (e) => {
     dispatch(changeLanguage(e.target.value));
   };
-  
-  // Custom GPT Search button text based on current view
-  const getGptButtonText = () => {
-    if (showGptSearch) return "Home";
-    if (location.pathname !== "/browse") return "Go To Home";
-    return "GPT Search";
-  }
-  
-  // Determine header background based on scroll and current path
-  const headerClass = isScrolled || location.pathname !== "/browse" ? 'bg-black bg-opacity-95' : 'bg-gradient-to-b from-black';
+
+  // Dynamic Background: Gradient at top, solid black when scrolled
+  const headerClass =
+    isScrolled || location.pathname !== "/browse"
+      ? "bg-[#141414] shadow-md bg-opacity-95"
+      : "bg-gradient-to-b from-black via-black/60 to-transparent";
 
   return (
-    <div className={`fixed w-full px-4 md:px-8 py-4 z-50 flex flex-col md:flex-row justify-between items-center transition-all duration-300 ${headerClass}`}>
-      <div className="flex items-center space-x-8">
-        <img 
-          className="w-32 md:w-44 cursor-pointer hover:opacity-80 transition" 
-          src={CINEGPT_LOGO} 
-          alt="logo" 
+    <div
+      className={`fixed top-0 w-full px-6 md:px-10 py-3 z-50 flex justify-between items-center transition-all duration-500 ease-in-out ${headerClass}`}
+    >
+      {/* --- LOGO SECTION --- */}
+      <div className="flex items-center">
+        <img
+          className="w-24 md:w-36 cursor-pointer hover:opacity-90 transition-opacity drop-shadow-lg"
+          src={CINEGPT_LOGO}
+          alt="CineGPT Logo"
           onClick={() => navigate("/browse")}
         />
       </div>
-      
+
+      {/* --- NAV & USER ACTIONS --- */}
       {user && (
-        <div className="flex items-center space-x-4 md:space-x-6 mt-4 md:mt-0">
+        <div className="flex items-center gap-4 md:gap-6">
           
-          {/* Language Selector (only in GPT Search view) */}
-          {location.pathname === "/browse" && showGptSearch && (
-            <select
-              className="py-1 px-2 bg-gray-900/80 text-white text-sm rounded border border-gray-600 focus:outline-none focus:ring-1 focus:ring-red-600"
-              onChange={handleLanguageChange}
-            >
-              {SUPPORTED_LANGUAGES.map((lang) => (
-                <option key={lang.identifier} value={lang.identifier}>
-                  {lang.name}
-                </option>
-              ))}
-            </select>
+          {/* Language Selector (Only on GPT Page) */}
+          {showGptSearch && (
+            <div className="relative">
+              <select
+                className="appearance-none bg-black/60 border border-gray-500 text-white text-xs md:text-sm py-1 px-3 rounded hover:border-white transition-colors focus:outline-none cursor-pointer"
+                onChange={handleLanguageChange}
+              >
+                {SUPPORTED_LANGUAGES.map((lang) => (
+                  <option key={lang.identifier} value={lang.identifier} className="bg-black text-white">
+                    {lang.name}
+                  </option>
+                ))}
+              </select>
+            </div>
           )}
 
-          {/* Favorites Button */}
-          <button
-            className="flex items-center space-x-1 py-1 px-3 bg-red-700 text-white rounded font-medium hover:bg-red-800 transition-all duration-300 shadow-lg text-sm md:text-base"
-            onClick={() => navigate("/favorites")}
-            title="My Favorites List"
-          >
-            <HeartIcon className="h-5 w-5" />
-            <span className="hidden lg:inline">My List</span>
-          </button>
+          {/* DESKTOP NAVIGATION (Text Links) */}
+          <div className="hidden md:flex items-center gap-5">
+            <button
+              onClick={() => navigate("/watchlater")}
+              className="group flex items-center gap-2 text-sm font-medium text-gray-300 hover:text-white transition-all duration-300"
+            >
+              <ClockIcon className="h-5 w-5 group-hover:scale-110 transition-transform" />
+              <span>Watch Later</span>
+            </button>
 
-          {/* Watch Later Button */}
+            <button
+              onClick={() => navigate("/favorites")}
+              className="group flex items-center gap-2 text-sm font-medium text-gray-300 hover:text-white transition-all duration-300"
+            >
+              <HeartIcon className="h-5 w-5 group-hover:scale-110 transition-transform" />
+              <span>My List</span>
+            </button>
+          </div>
+
+          {/* MOBILE NAVIGATION (Icons Only) */}
+          <div className="flex md:hidden items-center gap-3">
+             <button onClick={() => navigate("/watchlater")} className="text-gray-300 hover:text-white">
+                <ClockIcon className="h-6 w-6" />
+             </button>
+             <button onClick={() => navigate("/favorites")} className="text-gray-300 hover:text-white">
+                <HeartIcon className="h-6 w-6" />
+             </button>
+          </div>
+
+          {/* PRIMARY ACTION: GPT SEARCH (Red Button) */}
           <button
-            className="flex items-center space-x-1 py-1 px-3 bg-blue-700 text-white rounded font-medium hover:bg-blue-800 transition-all duration-300 shadow-lg text-sm md:text-base"
-            onClick={() => navigate("/watchlater")}
-            title="Watch Later List"
-          >
-            <ClockIcon className="h-5 w-5" />
-            <span className="hidden lg:inline">Watch Later</span>
-          </button>
-          
-          {/* GPT Search/Home Button */}
-          <button
-            className="flex items-center space-x-2 py-2 px-4 bg-purple-700 text-white rounded font-medium hover:bg-purple-800 transition-all duration-300 shadow-lg text-sm md:text-base"
+            className="flex items-center gap-2 py-2 px-4 bg-[#E50914] text-white rounded font-bold hover:bg-[#b00710] transition-all duration-300 shadow-lg transform hover:scale-105"
             onClick={handleGptSearchClick}
-            title={showGptSearch ? "Go to Home" : "GPT Search"}
           >
-            {showGptSearch ? <HomeIcon className="h-5 w-5" /> : <MagnifyingGlassIcon className="h-5 w-5" />}
-            <span className="hidden md:inline">{getGptButtonText()}</span>
+            {showGptSearch ? (
+              <>
+                <HomeIcon className="h-5 w-5" />
+                <span className="hidden md:block text-sm">Home</span>
+              </>
+            ) : (
+              <>
+                <MagnifyingGlassIcon className="h-5 w-5" />
+                <span className="hidden md:block text-sm">GPT Search</span>
+              </>
+            )}
           </button>
 
-          <div className="flex items-center group relative cursor-pointer">
-             <UserCircleIcon className="h-8 w-8 md:h-10 md:w-10 text-white" />
-             <button
+          {/* USER PROFILE & LOGOUT */}
+          <div className="flex items-center gap-3 border-l border-gray-700 pl-4 ml-1">
+            <UserCircleIcon className="h-9 w-9 text-white cursor-pointer hover:text-gray-300 transition-colors" />
+            
+            <button
               onClick={handleSignOut}
-              className="ml-4 text-gray-300 hover:text-white transition"
+              className="text-gray-400 hover:text-[#E50914] transition-colors"
               title="Sign Out"
             >
-              <ArrowRightOnRectangleIcon className="h-6 w-6 md:h-7 md:w-7" />
+              <ArrowRightOnRectangleIcon className="h-7 w-7" />
             </button>
           </div>
         </div>
@@ -158,4 +181,5 @@ const Header = () => {
     </div>
   );
 };
+
 export default Header;
