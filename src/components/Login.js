@@ -26,7 +26,6 @@ const Login = () => {
     if (message) return;
 
     if (!isSignInForm) {
-      // Sign Up Logic
       createUserWithEmailAndPassword(
         auth,
         email.current.value,
@@ -54,12 +53,9 @@ const Login = () => {
             });
         })
         .catch((error) => {
-          const errorCode = error.code;
-          const errorMessage = error.message;
-          setErrorMessage(errorCode + "-" + errorMessage);
+          setErrorMessage(error.code + "-" + error.message);
         });
     } else {
-      // Sign In Logic
       signInWithEmailAndPassword(
         auth,
         email.current.value,
@@ -67,12 +63,9 @@ const Login = () => {
       )
         .then((userCredential) => {
           // Signed in
-          const user = userCredential.user;
         })
         .catch((error) => {
-          const errorCode = error.code;
-          const errorMessage = error.message;
-          setErrorMessage(errorCode + "-" + errorMessage);
+          setErrorMessage(error.code + "-" + error.message);
         });
     }
   };
@@ -80,17 +73,21 @@ const Login = () => {
   const toggleSignInForm = () => {
     setIsSignInForm(!isSignInForm);
   };
+
   return (
     <div>
       <Header />
-      <div className="absolute">
-        <img className="h-screen object-cover w-screen" src={BG_URL} alt="logo" />
+      <div className="absolute top-0 left-0 w-full h-full -z-10">
+        <img className="h-full w-full object-cover" src={BG_URL} alt="background" />
+        {/* Dark overlay for better text contrast */}
+        <div className="absolute inset-0 bg-black bg-opacity-50"></div>
       </div>
+      
       <form
         onSubmit={(e) => e.preventDefault()}
-        className="w-full md:w-3/12 absolute p-12 bg-black my-36 mx-auto right-0 left-0 text-white rounded-lg bg-opacity-80"
+        className="w-full md:w-3/12 absolute p-12 bg-black bg-opacity-80 my-36 mx-auto right-0 left-0 text-white rounded-lg shadow-2xl"
       >
-        <h1 className="font-bold text-3xl py-4">
+        <h1 className="font-bold text-3xl py-4 mb-4">
           {isSignInForm ? "Sign In" : "Sign Up"}
         </h1>
 
@@ -99,31 +96,31 @@ const Login = () => {
             ref={name}
             type="text"
             placeholder="Full Name"
-            className="p-4 my-4 w-full bg-gray-700"
+            className="p-4 my-2 w-full bg-[#333] text-white rounded outline-none border border-transparent focus:border-gray-500 transition-all placeholder-gray-400"
           />
         )}
         <input
           ref={email}
           type="text"
           placeholder="Email Address"
-          className="p-4 my-4 w-full bg-gray-700"
+          className="p-4 my-2 w-full bg-[#333] text-white rounded outline-none border border-transparent focus:border-gray-500 transition-all placeholder-gray-400"
         />
         <input
           ref={password}
           type="password"
           placeholder="Password"
-          className="p-4 my-4 w-full bg-gray-700"
+          className="p-4 my-2 w-full bg-[#333] text-white rounded outline-none border border-transparent focus:border-gray-500 transition-all placeholder-gray-400"
         />
-        <p className="text-red-500 font-bold text-lg py-2">{errorMessage}</p>
+        <p className="text-red-500 font-bold text-sm py-2">{errorMessage}</p>
         <button
-          className="p-4 my-6 bg-red-700 w-full rounded-lg"
+          className="p-4 my-6 bg-[#E50914] w-full rounded font-bold hover:bg-[#c11119] transition duration-200"
           onClick={handleButtonClick}
         >
           {isSignInForm ? "Sign In" : "Sign Up"}
         </button>
-        <p className="py-4 cursor-pointer" onClick={toggleSignInForm}>
+        <p className="py-4 cursor-pointer text-gray-400 hover:text-white transition" onClick={toggleSignInForm}>
           {isSignInForm
-            ? "New to Netflix? Sign Up Now"
+            ? "New to Netflix? Sign Up Now."
             : "Already registered? Sign In Now."}
         </p>
       </form>
