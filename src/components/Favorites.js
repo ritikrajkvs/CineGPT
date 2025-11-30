@@ -3,10 +3,10 @@ import { useSelector } from 'react-redux';
 import Header from './Header';
 import { BG_URL } from '../utils/constants';
 
+// OPTIMIZATION: Move lazy import outside component to prevent re-creation on every render
+const MovieCard = React.lazy(() => import('./MovieCard')); 
+
 const Favorites = () => {
-  // Use MovieList.js to render cards with functionality
-  const MovieCard = React.lazy(() => import('./MovieCard')); 
-  
   const favorites = useSelector((store) => store.movies.favorites);
   
   return (
@@ -30,7 +30,7 @@ const Favorites = () => {
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6">
                 {favorites.map((movie) => (
                     <div key={movie.id} className="w-full">
-                        <React.Suspense fallback={<div>Loading...</div>}>
+                        <React.Suspense fallback={<div className="text-white">Loading...</div>}>
                             <MovieCard movie={movie} />
                         </React.Suspense>
                     </div>
