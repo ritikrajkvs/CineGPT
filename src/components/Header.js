@@ -171,7 +171,15 @@ const Header = () => {
               className="group relative"
               title="View Profile"
             >
-              <UserCircleIcon className="h-9 w-9 text-white cursor-pointer hover:text-gray-300 transition-colors" />
+               {user?.photoURL ? (
+                  <img
+                    className="h-9 w-9 rounded object-cover cursor-pointer hover:opacity-80 transition-opacity border border-transparent hover:border-white box-border"
+                    alt="user icon"
+                    src={user?.photoURL}
+                  />
+                ) : (
+                  <UserCircleIcon className="h-9 w-9 text-white cursor-pointer hover:text-gray-300 transition-colors" />
+              )}
             </button>
             
             <button
