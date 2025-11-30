@@ -4,7 +4,8 @@ import Login from "./Login";
 import { RouterProvider } from "react-router-dom";
 import Favorites from "./Favorites";
 import WatchLater from "./WatchLater";
-import Profile from "./Profile"; // 1. Import Profile
+import Profile from "./Profile";
+import EditProfile from "./EditProfile"; // 1. Import EditProfile
 
 const Body = () => {
   const appRouter = createBrowserRouter([
@@ -25,8 +26,12 @@ const Body = () => {
       element: <WatchLater />,
     },
     {
-      path: "/profile", // 2. Add Profile Route
+      path: "/profile",
       element: <Profile />,
+    },
+    {
+      path: "/edit-profile", // 2. Add Route
+      element: <EditProfile />,
     },
   ]);
 
