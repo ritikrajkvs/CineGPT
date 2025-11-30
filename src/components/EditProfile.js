@@ -1,11 +1,11 @@
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { updateProfile } from "firebase/auth";
 import { auth } from "../utils/firebase";
 import { addUser } from "../utils/userSlice";
 import { useNavigate } from "react-router-dom";
 import Header from "./Header";
-import { BG_URL, PROFILE_AVATARS } from "../utils/constants";
+import { BG_URL, PROFILE_AVATARS, USER_AVATAR } from "../utils/constants";
 import { CheckIcon } from "@heroicons/react/24/solid";
 
 const EditProfile = () => {
@@ -15,9 +15,14 @@ const EditProfile = () => {
 
   // State for form inputs
   const [name, setName] = useState(user?.displayName || "");
-  const [selectedAvatar, setSelectedAvatar] = useState(user?.photoURL);
+  const [selectedAvatar, setSelectedAvatar] = useState(user?.photoURL || USER_AVATAR);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+
+  // Fallback function for broken images
+  const handleImageError = (e) => {
+    e.target.src = USER_AVATAR; // Switch to default if link breaks
+  };
 
   const handleSave = async () => {
     if (!name.trim()) {
@@ -35,8 +40,7 @@ const EditProfile = () => {
         photoURL: selectedAvatar,
       });
 
-      // 2. Update Redux Store (Force refresh with new data)
-      // Note: We pull directly from auth.currentUser to ensure sync
+      // 2. Update Redux Store
       const { uid, email, displayName, photoURL } = auth.currentUser;
       dispatch(
         addUser({
@@ -47,7 +51,7 @@ const EditProfile = () => {
         })
       );
 
-      // 3. Navigate back to Profile
+      // 3. Navigate back
       navigate("/profile");
     } catch (err) {
       setError("Failed to update profile. Please try again.");
@@ -83,6 +87,7 @@ const EditProfile = () => {
                    <img
                     src={selectedAvatar}
                     alt="Current Avatar"
+                    onError={handleImageError}
                     className="w-32 h-32 md:w-40 md:h-40 rounded-md object-cover border-2 border-gray-500"
                   />
                   <div className="absolute bottom-2 right-2 bg-black/70 p-1 rounded-full border border-gray-500">
@@ -110,6 +115,7 @@ const EditProfile = () => {
                       key={index}
                       src={avatar}
                       alt={`Avatar ${index}`}
+                      onError={handleImageError} // Added error handler here too
                       onClick={() => setSelectedAvatar(avatar)}
                       className={`w-14 h-14 md:w-16 md:h-16 rounded cursor-pointer object-cover transition-all hover:scale-110 ${
                         selectedAvatar === avatar
