@@ -5,9 +5,11 @@ const moviesSlice = createSlice({
   initialState: {
     nowPlayingMovies: null,
     popularMovies: null,
-    trendingMovies: null, // Add this new state
+    trendingMovies: null,
     trailerVideo: null,
     movieTrailer: null,
+    favorites: [], // New State
+    watchLater: [], // New State
   },
   reducers: {
     addNowPlayingMovies: (state, action) => {
@@ -16,7 +18,7 @@ const moviesSlice = createSlice({
     addPopularMovies: (state, action) => {
       state.popularMovies = action.payload;
     },
-    addTrendingMovies: (state, action) => { // Add this new reducer
+    addTrendingMovies: (state, action) => {
       state.trendingMovies = action.payload;
     },
     addTrailerVideo: (state, action) => {
@@ -25,6 +27,25 @@ const moviesSlice = createSlice({
     addMovieTrailer: (state, action) => {
       state.movieTrailer = action.payload;
     },
+    // New Actions
+    toggleFavorite: (state, action) => {
+      const movie = action.payload;
+      const index = state.favorites.findIndex((m) => m.id === movie.id);
+      if (index >= 0) {
+        state.favorites.splice(index, 1); // Remove if exists
+      } else {
+        state.favorites.push(movie); // Add if doesn't exist
+      }
+    },
+    toggleWatchLater: (state, action) => {
+      const movie = action.payload;
+      const index = state.watchLater.findIndex((m) => m.id === movie.id);
+      if (index >= 0) {
+        state.watchLater.splice(index, 1);
+      } else {
+        state.watchLater.push(movie);
+      }
+    },
   },
 });
 
@@ -32,8 +53,10 @@ export const {
   addNowPlayingMovies,
   addTrailerVideo,
   addPopularMovies,
-  addTrendingMovies, // Export the new action
+  addTrendingMovies,
   addMovieTrailer,
+  toggleFavorite,
+  toggleWatchLater,
 } = moviesSlice.actions;
 
 export default moviesSlice.reducer;
