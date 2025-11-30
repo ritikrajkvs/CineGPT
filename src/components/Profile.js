@@ -5,7 +5,7 @@ import { signOut } from "firebase/auth";
 import { auth } from "../utils/firebase";
 import Header from "./Header";
 import { BG_URL } from "../utils/constants";
-import { UserCircleIcon, HeartIcon, ClockIcon } from "@heroicons/react/24/solid";
+import { HeartIcon, ClockIcon } from "@heroicons/react/24/solid";
 
 const Profile = () => {
   const user = useSelector((store) => store.user);
@@ -97,9 +97,10 @@ const Profile = () => {
 
             {/* Action Buttons */}
             <div className="flex flex-col gap-4">
+              {/* Updated: Navigate to /edit-profile */}
               <button 
                 className="w-full py-3 bg-transparent border border-gray-500 text-gray-300 hover:text-white hover:border-white font-medium rounded transition-all"
-                onClick={() => alert("Edit Profile Feature Coming Soon!")}
+                onClick={() => navigate("/edit-profile")}
               >
                 Edit Profile
               </button>
