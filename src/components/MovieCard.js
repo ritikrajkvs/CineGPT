@@ -1,7 +1,8 @@
+import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { IMG_CDN_URL } from "../utils/constants";
-import { toggleFavorite, toggleWatchLater } from "../utils/moviesSlice";
-import { HeartIcon, PlusCircleIcon } from "@heroicons/react/24/outline";
+import { IMG_CDN_URL, API_OPTIONS } from "../utils/constants";
+import { toggleFavorite, toggleWatchLater, addMovieTrailer } from "../utils/moviesSlice";
+import { HeartIcon, PlusCircleIcon, PlayCircleIcon } from "@heroicons/react/24/outline";
 import { HeartIcon as HeartSolid, PlusCircleIcon as PlusSolid } from "@heroicons/react/24/solid";
 
 const MovieCard = ({ movie }) => {
@@ -24,9 +25,31 @@ const MovieCard = ({ movie }) => {
     dispatch(toggleWatchLater(movie));
   };
 
+  const handlePlayClick = async (e) => {
+    e.stopPropagation();
+    try {
+      const data = await fetch(
+        "https://api.themoviedb.org/3/movie/" + movie.id + "/videos?language=en-US",
+        API_OPTIONS
+      );
+      const json = await data.json();
+
+      if (json.results) {
+        const filterData = json.results.filter((video) => video.type === "Trailer");
+        const trailer = filterData.length ? filterData[0] : json.results[0];
+        dispatch(addMovieTrailer(trailer));
+      }
+    } catch (error) {
+      console.error("Error fetching trailer:", error);
+    }
+  };
+
   return (
     <div className="w-36 md:w-48 pr-4 relative group cursor-pointer">
-      <div className="transition-transform duration-300 ease-in-out group-hover:scale-105 group-hover:z-50 relative rounded-md overflow-hidden shadow-lg">
+      <div 
+        className="transition-transform duration-300 ease-in-out group-hover:scale-110 group-hover:z-50 relative rounded-md overflow-hidden shadow-lg"
+        onClick={handlePlayClick} // Making the whole card clickable for play
+      >
         <img
           alt="Movie Card"
           src={IMG_CDN_URL + movie.poster_path}
@@ -34,23 +57,34 @@ const MovieCard = ({ movie }) => {
         />
         
         {/* Overlay with Action Buttons */}
-        <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-60 transition-all duration-300 flex flex-col justify-center items-center opacity-0 group-hover:opacity-100 space-y-4">
+        <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-60 transition-all duration-300 flex flex-col justify-center items-center opacity-0 group-hover:opacity-100 space-y-2">
             
+            {/* Play Button */}
             <button 
-                onClick={handleFavorite}
-                className="p-2 rounded-full bg-white bg-opacity-20 hover:bg-opacity-100 hover:text-red-600 text-white transition-all transform hover:scale-110"
-                title={isFav ? "Remove from Favorites" : "Add to Favorites"}
+                onClick={handlePlayClick}
+                className="p-2 rounded-full bg-white text-black hover:bg-red-600 hover:text-white transition-all transform hover:scale-110 mb-2"
+                title="Play Trailer"
             >
-                {isFav ? <HeartSolid className="h-6 w-6 text-red-600" /> : <HeartIcon className="h-6 w-6" />}
+                <PlayCircleIcon className="h-10 w-10" />
             </button>
 
-            <button 
-                onClick={handleWatchLater}
-                className="p-2 rounded-full bg-white bg-opacity-20 hover:bg-opacity-100 hover:text-blue-600 text-white transition-all transform hover:scale-110"
-                title={isWatchLater ? "Remove from Watch Later" : "Watch Later"}
-            >
-                 {isWatchLater ? <PlusSolid className="h-6 w-6 text-blue-600" /> : <PlusCircleIcon className="h-6 w-6" />}
-            </button>
+            <div className="flex space-x-4">
+              <button 
+                  onClick={handleFavorite}
+                  className="p-2 rounded-full bg-gray-600 bg-opacity-50 hover:bg-white hover:text-red-600 text-white transition-all transform hover:scale-110"
+                  title={isFav ? "Remove from Favorites" : "Add to Favorites"}
+              >
+                  {isFav ? <HeartSolid className="h-6 w-6 text-red-600" /> : <HeartIcon className="h-6 w-6" />}
+              </button>
+
+              <button 
+                  onClick={handleWatchLater}
+                  className="p-2 rounded-full bg-gray-600 bg-opacity-50 hover:bg-white hover:text-blue-600 text-white transition-all transform hover:scale-110"
+                  title={isWatchLater ? "Remove from Watch Later" : "Watch Later"}
+              >
+                  {isWatchLater ? <PlusSolid className="h-6 w-6 text-blue-600" /> : <PlusCircleIcon className="h-6 w-6" />}
+              </button>
+            </div>
         </div>
       </div>
     </div>
